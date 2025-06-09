@@ -1,35 +1,47 @@
-﻿using OpenQA.Selenium;
+﻿using AT.Framework.Enums;
+using OpenQA.Selenium;
+using System.Diagnostics;
 
 namespace AT.Selenium.Drivers
 {
     public static class Driver
     {
-        private static IWebDriver? _instance;
+        [ThreadStatic] private static IWebDriver? _driver;
 
-        public static IWebDriver Instance
+        public static IWebDriver GetInstance()
         {
-            get
-            {
-                if (_instance == null)
-                    _instance = WebDriverFactory.CreateDriver();
+            if (_driver != null) return _driver;
+            _driver = new WebDriverFactory().CreateDriver();
+            return _driver;
+        }
 
-                return _instance;
+        public static void QuitDriver()
+        {
+            if (_driver != null)
+            {
+                _driver.Close();
+                _driver.Quit();
+                _driver.Dispose();
+
+                _driver = null;
             }
         }
 
-        public static void Quit()
+        public static void KillAllDriverProcess(DriverType type = DriverType.Chrome)
         {
-            if (_instance == null)
-                return;
+            string driverName = type switch
+            {
+                DriverType.Chrome or DriverType.ChromeHeadless => "chromedriver",
+                DriverType.Firefox or DriverType.FirefoxHeadless => "geckodriver",
+                DriverType.Edge or DriverType.EdgeHeadless => "msedgewebview2",
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null),
+            };
 
-            _instance.Quit();
-            _instance.Dispose();
-            _instance = null;
-        }
-
-        public static void Close()
-        {
-            _instance?.Close();
+            foreach (var proc in Process.GetProcessesByName(driverName))
+            {
+                try { proc.Kill(); }
+                catch (Exception ex) { Debug.WriteLine($"Failed to kill {proc.ProcessName}: {ex.Message}"); }
+            }
         }
     }
 }

@@ -4,24 +4,26 @@ namespace AT.Framework.Helpers
 {
     public static class ConfigurationHelper
     {
-        private const string configName = "appsettings.json";
+        private const string DefaultConfigName = "appsettings.json";
 
-        public static IConfigurationRoot GetConfiguration(string configName = configName)
+        public static IConfigurationRoot GetConfiguration(string configName = DefaultConfigName)
         {
             var basePath = Directory.GetCurrentDirectory();
 
-            return new ConfigurationBuilder().SetBasePath(basePath)
-                .AddJsonFile(configName, optional: true, reloadOnChange: true).Build();
+            return new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile(configName, optional: true, reloadOnChange: true)
+                .Build();
         }
 
-        public static T GetBindConfiguration<T>(string section, string configName = configName)
+        public static T GetBindConfiguration<T>(string section, string configName = DefaultConfigName)
         {
             var config = GetConfiguration(configName)
                 .GetSection(section)
-                .Get<T>(x => x.BindNonPublicProperties = true);
+                .Get<T>(options => options.BindNonPublicProperties = true);
 
             if (config == null)
-                throw new NullReferenceException("Config was not read corectly.");
+                throw new NullReferenceException($"Section '{section}' could not be bound from {configName}");
 
             return config;
         }

@@ -1,8 +1,14 @@
 ﻿namespace AT.Framework.Loggers
 {
-    public class NLogLogger(string name) : ILogger
+    public class NLogLogger : ILogger
     {
-        private readonly NLog.Logger _logger = NLog.LogManager.GetLogger(name);
+        private readonly NLog.Logger _logger;
+
+        public NLogLogger(string name)
+        {
+            _logger = NLog.LogManager.GetLogger(name);
+        }
+
         public void Info(string message) => _logger.Info(message);
         public void Debug(string message) => _logger.Debug(message);
         public void Warn(string message) => _logger.Warn(message);

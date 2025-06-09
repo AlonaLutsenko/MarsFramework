@@ -12,9 +12,9 @@ namespace AT.Selenium.Drivers
 {
     public class WebDriverFactory
     {
-        public static IWebDriver CreateDriver()
+        public IWebDriver CreateDriver()
         {
-            return AppSettings.DriverCapabilities.WebBrowser.BrowserName switch
+            return AppSettings.DriverCapabilities.Browser switch
             {
                 DriverType.Chrome => CreateChromeDriver(headless: false),
                 DriverType.ChromeHeadless => CreateChromeDriver(headless: true),
@@ -22,11 +22,11 @@ namespace AT.Selenium.Drivers
                 DriverType.FirefoxHeadless => CreateFirefoxDriver(headless: true),
                 DriverType.Edge => CreateEdgeDriver(headless: false),
                 DriverType.EdgeHeadless => CreateEdgeDriver(headless: true),
-                _ => throw new NotSupportedException($"Browser type '{AppSettings.DriverCapabilities.WebBrowser.BrowserName}' is not supported.")
+                _ => throw new NotSupportedException($"Browser type '{AppSettings.DriverCapabilities.Browser}' is not supported.")
             };
         }
 
-        private static IWebDriver CreateChromeDriver(bool headless)
+        private IWebDriver CreateChromeDriver(bool headless)
         {
             new DriverManager().SetUpDriver(new ChromeConfig());
             var options = new ChromeOptions();
@@ -34,7 +34,7 @@ namespace AT.Selenium.Drivers
             return InitDriver(new ChromeDriver(options));
         }
 
-        private static IWebDriver CreateFirefoxDriver(bool headless)
+        private IWebDriver CreateFirefoxDriver(bool headless)
         {
             new DriverManager().SetUpDriver(new FirefoxConfig());
             var options = new FirefoxOptions();
@@ -42,7 +42,7 @@ namespace AT.Selenium.Drivers
             return InitDriver(new FirefoxDriver(options));
         }
 
-        private static IWebDriver CreateEdgeDriver(bool headless)
+        private IWebDriver CreateEdgeDriver(bool headless)
         {
             new DriverManager().SetUpDriver(new EdgeConfig());
             var options = new EdgeOptions();
@@ -50,9 +50,9 @@ namespace AT.Selenium.Drivers
             return InitDriver(new EdgeDriver(options));
         }
 
-        private static IWebDriver InitDriver(IWebDriver driver)
+        private IWebDriver InitDriver(IWebDriver driver)
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(ConfigReader.ImplicitWait);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(AppSettings.DriverCapabilities.ImplicitWait);
             driver.Manage().Window.Maximize();
             return driver;
         }

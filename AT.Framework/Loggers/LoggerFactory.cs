@@ -1,4 +1,6 @@
-﻿namespace AT.Framework.Loggers
+﻿using AT.Framework.Constants;
+
+namespace AT.Framework.Loggers
 {
     public static class LoggerFactory
     {
@@ -7,8 +9,8 @@
             return type.ToLower() switch
             {
                 LoggerTypes.Log4Net => new Log4NetLogger(name),
-                LoggerTypes.Console => new ConsoleLogger(),
                 LoggerTypes.NLog => new NLogLogger(name),
+                LoggerTypes.Serilog => new SerilogLogger(name),
                 _ => throw new ArgumentException($"Unsupported logger type: {type}")
             };
         }

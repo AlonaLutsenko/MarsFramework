@@ -1,8 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using AT.Selenium.Drivers;
+using OpenQA.Selenium;
 
 namespace AT.Selenium.Pages
 {
-    public class LoginPage(IWebDriver driver) : BasePage(driver)
+    public class LoginPage : BasePages
     {
         private readonly By usernameField = By.Id("user-name");
         private readonly By passwordField = By.Id("password");
@@ -10,9 +11,10 @@ namespace AT.Selenium.Pages
 
         public void Login(string username, string password)
         {
-            Driver.FindElement(usernameField).SendKeys(username);
-            Driver.FindElement(passwordField).SendKeys(password);
-            Driver.FindElement(loginButton).Click();
+            var driver = Driver.GetInstance();
+            driver.FindElement(usernameField).SendKeys(username);
+            driver.FindElement(passwordField).SendKeys(password);
+            driver.FindElement(loginButton).Click();
         }
     }
 }
