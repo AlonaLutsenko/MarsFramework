@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Serilog;
 using Serilog.Events;
 using AppConfig = AT.Framework.Models.Appsettings.LoggerConfiguration;
-using SerilogConf = Serilog.LoggerConfiguration;
 
 namespace AT.Framework.Logger
 {
@@ -68,57 +67,66 @@ namespace AT.Framework.Logger
 
         public static ILogger InitNewLogger(string loggerName)
         {
-            var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            _testDirectory = Directory.CreateDirectory(
-                Path.Combine(Directory.GetCurrentDirectory(), "Logs", loggerName, timestamp));
+            var timestamp = NowStamp();
+            _testDirectory = CreateLogDirectory(loggerName, timestamp);
 
-            var configRoot = new ConfigurationBuilder()
+            var settings = LoadSettings() ?? DefaultSettings();
+            var builder = ConfigureLogger(loggerName, timestamp, settings);
+
+            return builder.CreateLogger();
+        }
+
+        private static string NowStamp() =>
+            DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
+        private static DirectoryInfo CreateLogDirectory(string loggerName, string stamp) =>
+            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Logs", loggerName, stamp));
+
+        private static AppConfig? LoadSettings()
+        {
+            var cfg = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            var settings = configRoot
-                .GetSection(nameof(Models.Appsettings.LoggerConfiguration))
+            return cfg
+                .GetSection("LoggerConfiguration")
                 .Get<AppConfig>();
+        }
 
-            if (settings == null)
+        private static AppConfig DefaultSettings()
+        {
+            Console.WriteLine("[WARN] ...; using defaults.");
+            return new AppConfig
             {
-                settings = new AppConfig
-                {
-                    LogLevel = "Information",
-                    ConsoleConversionPattern = "[{Timestamp:HH:mm:ss} {Level}] {Message}{NewLine}{Exception}",
-                    FileConversionPattern = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
-                    TestStepLog = false,
-                    ElementDiagnostic = false,
-                    JavascriptDiagnostics = false,
-                    ApiTrafficLog = false
-                };
-                Console.WriteLine("[WARN] appsettings.json LoggerConfiguration section not found; using defaults.");            
+                LogLevel = "Information",
+                ConsoleConversionPattern = "[{Timestamp:HH:mm:ss} {Level}] {Message}{NewLine}{Exception}",
+                FileConversionPattern = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
+                TestStepLog = false,
+                ElementDiagnostic = false,
+                JavascriptDiagnostics = false,
+                ApiTrafficLog = false
+            };
+        }
+
+        private static LoggerConfiguration ConfigureLogger(string name, string stamp, AppConfig s)
+        {
+            var baseCfg = new LoggerConfiguration()
+                .Enrich.WithProperty("LoggerName", name)
+                .MinimumLevel.Is(Enum.Parse<LogEventLevel>(s.LogLevel, true))
+                .WriteTo.Console(outputTemplate: s.ConsoleConversionPattern)
+                .WriteTo.File(Path.Combine(_testDirectory!.FullName, $"{name}_{stamp}.log"),
+                              outputTemplate: s.FileConversionPattern);
+
+            if (s.TestStepLog)
+            {
+                baseCfg = baseCfg.WriteTo.File(
+                    Path.Combine(_testDirectory.FullName, $"{name}_steps_{stamp}.log"),
+                    outputTemplate: s.FileConversionPattern,
+                    restrictedToMinimumLevel: LogEventLevel.Information);
             }
 
-            var builder = new SerilogConf()
-                .Enrich.WithProperty("LoggerName", loggerName)
-                .MinimumLevel.Is(Enum.Parse<LogEventLevel>(settings.LogLevel, true));
-
-            builder = builder.WriteTo.Console(outputTemplate: settings.ConsoleConversionPattern);
-
-            var generalLogPath = Path.Combine(_testDirectory.FullName, $"{loggerName}_{timestamp}.log");
-            builder = builder.WriteTo.File(
-                generalLogPath,
-                outputTemplate: settings.FileConversionPattern,
-                rollingInterval: RollingInterval.Infinite);
-
-            if (settings.TestStepLog)
-            {
-                var stepsLogPath = Path.Combine(_testDirectory.FullName, $"{loggerName}_steps_{timestamp}.log");
-                builder = builder.WriteTo.File(
-                    stepsLogPath,
-                    outputTemplate: settings.FileConversionPattern,
-                    restrictedToMinimumLevel: LogEventLevel.Information,
-                    rollingInterval: RollingInterval.Infinite);
-            }
-
-            return builder.CreateLogger();
+            return baseCfg;
         }
     }
 }
