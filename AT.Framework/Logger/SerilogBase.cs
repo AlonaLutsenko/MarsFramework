@@ -114,18 +114,17 @@ namespace AT.Framework.Logger
             var baseCfg = new LoggerConfiguration()
                 .Enrich.WithProperty("LoggerName", name)
                 .MinimumLevel.Is(Enum.Parse<LogEventLevel>(s.LogLevel, true))
-                .WriteTo.Console(outputTemplate: s.ConsoleConversionPattern)
-                .WriteTo.File(Path.Combine(_testDirectory!.FullName, $"{name}_{stamp}.log"),
-                              outputTemplate: s.FileConversionPattern);
+                .WriteTo.Async(a => a.Console(outputTemplate: s.ConsoleConversionPattern))
+                .WriteTo.Async(a => a.File(Path.Combine(_testDirectory!.FullName, $"{name}_{stamp}.log"),
+                                            outputTemplate: s.FileConversionPattern));
 
             if (s.TestStepLog)
             {
-                baseCfg = baseCfg.WriteTo.File(
-                    Path.Combine(_testDirectory.FullName, $"{name}_steps_{stamp}.log"),
+                baseCfg = baseCfg.WriteTo.Async(a => a.File(
+                    Path.Combine(_testDirectory!.FullName, $"{name}_steps_{stamp}.log"),
                     outputTemplate: s.FileConversionPattern,
-                    restrictedToMinimumLevel: LogEventLevel.Information);
+                    restrictedToMinimumLevel: LogEventLevel.Information));
             }
-
             return baseCfg;
         }
     }
