@@ -36,8 +36,8 @@ namespace AT.Framework
             get
             {
                 if (_loggerConfig == null)
-                    _loggerConfig = ConfigurationHelper.GetBindConfiguration<LoggerConfiguration>(section: "LogConf")
-                        ?? throw new Exception("Can't retrieve LogConf section from appsettings.json!");
+                    _loggerConfig = ConfigurationHelper.GetBindConfiguration<LoggerConfiguration>(section: "LoggerConfiguration")
+                        ?? throw new Exception("Can't retrieve LoggerConfiguration section from appsettings.json!");
                 return _loggerConfig;
             }
         }
