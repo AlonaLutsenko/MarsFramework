@@ -2,6 +2,8 @@
 {
     public class LoggerConfiguration
     {
+        public required string ConsoleConversionPattern { get; set; }
+        public required string FileConversionPattern { get; set; }
         public required string LogLevel { get; set; }
         public bool TestStepLog { get; set; } = true;
         public bool ApiTrafficLog { get; set; } = true;
