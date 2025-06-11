@@ -2,7 +2,7 @@
 using AT.Selenium.Drivers;
 using OpenQA.Selenium;
 
-namespace AT.Selenium.Pages
+namespace AT.Selenium.Pages.CommonPages
 {
     public class LoginPage : BasePages
     {
@@ -12,8 +12,8 @@ namespace AT.Selenium.Pages
 
         public void Login(string username, string password)
         {
-            var driver = Driver.GetInstance(); 
-            SerilogBase.Info("Navigated to Login Page"); 
+            var driver = Driver.GetInstance();
+            SerilogBase.Info("Navigated to Login Page");
             SerilogBase.TestStepLog("User enters credentials");
             driver.FindElement(usernameField).SendKeys(username);
             driver.FindElement(passwordField).SendKeys(password);

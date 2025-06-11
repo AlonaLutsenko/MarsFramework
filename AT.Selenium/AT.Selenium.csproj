@@ -16,4 +16,9 @@
     <ProjectReference Include="..\AT.Framework\AT.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Elements\BaseElements\" />
+    <Folder Include="Pages\ProductDetails\" />
+  </ItemGroup>
+
 </Project>

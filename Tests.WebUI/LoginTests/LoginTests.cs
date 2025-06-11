@@ -1,4 +1,4 @@
-﻿using AT.Selenium.Pages;
+﻿using AT.Selenium.Pages.CommonPages;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 

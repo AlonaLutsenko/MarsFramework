@@ -1,6 +1,5 @@
 ﻿using AT.Framework;
 using AT.Framework.Enums;
-using AT.Framework.Utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
