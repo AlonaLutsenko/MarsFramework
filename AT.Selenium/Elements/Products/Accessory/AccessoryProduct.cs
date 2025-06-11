@@ -1,13 +1,11 @@
-﻿using AT.Selenium.Elements.Products.Abstract;
-
-namespace AT.Selenium.Elements.Products.Concrete.Clothing
+﻿namespace AT.Selenium.Elements.Products.Accessory
 {
-    public class ClothingProduct : IProduct
+    public class AccessoryProduct : IProduct
     {
         private readonly string _name;
         private readonly double _price;
 
-        public ClothingProduct(string name, double price)
+        public AccessoryProduct(string name, double price)
         {
             _name = name;
             _price = price;
@@ -18,7 +16,7 @@ namespace AT.Selenium.Elements.Products.Concrete.Clothing
 
         public void DisplayInfo()
         {
-            Console.WriteLine($"Clothe: '{_name}', Price: {_price:C}");
+            Console.WriteLine($"Accessory: '{_name}', Price: {_price:C}");
         }
     }
 }

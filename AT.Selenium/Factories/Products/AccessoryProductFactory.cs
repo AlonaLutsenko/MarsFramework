@@ -1,6 +1,5 @@
-﻿using AT.Selenium.Elements.Products.Abstract;
-using AT.Selenium.Elements.Products.Concrete.Accessory;
-using AT.Selenium.Factories.Abstract;
+﻿using AT.Selenium.Elements.Products;
+using AT.Selenium.Elements.Products.Accessory;
 
 namespace AT.Selenium.Factories.Products
 {

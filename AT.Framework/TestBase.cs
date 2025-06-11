@@ -6,6 +6,7 @@ namespace AT.Framework
     public abstract class TestBase
     {
         protected virtual string? BaseUrl { get; set; }
+        protected virtual string ProjectName => "E-commerce Order Creation Tests";
 
         [SetUp]
         public virtual void SetUp()

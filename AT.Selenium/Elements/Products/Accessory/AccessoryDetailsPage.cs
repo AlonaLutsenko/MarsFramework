@@ -1,6 +1,4 @@
-﻿using AT.Selenium.Elements.Products.Abstract;
-
-namespace AT.Selenium.Elements.Products.Concrete.Accessory
+﻿namespace AT.Selenium.Elements.Products.Accessory
 {
     public class AccessoryDetailsPage : IProductDetailsPage
     {

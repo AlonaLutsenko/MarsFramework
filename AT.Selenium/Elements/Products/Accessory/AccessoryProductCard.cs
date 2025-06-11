@@ -1,6 +1,4 @@
-﻿using AT.Selenium.Elements.Products.Abstract;
-
-namespace AT.Selenium.Elements.Products.Concrete.Accessory
+﻿namespace AT.Selenium.Elements.Products.Accessory
 {
     public class AccessoryProductCard : IProductCard
     {
@@ -19,11 +17,6 @@ namespace AT.Selenium.Elements.Products.Concrete.Accessory
         {
             Console.WriteLine("Getting the price of the 'Accessory' product from the card.");
             return 15.00;
-        }
-
-        public void AddToWishlist()
-        {
-            Console.WriteLine("Adding accessory to wishlist.");
         }
     }
 }

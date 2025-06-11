@@ -9,8 +9,6 @@ namespace Tests.WebUI.ProductTests
     [TestFixture]
     public class ProductCatalogTests : TestBase
     {
-        protected string ProjectName => "E-commerce Product Catalog Tests";
-
         [Test]
         public void VerifyClothingProductWorkflow()
         {

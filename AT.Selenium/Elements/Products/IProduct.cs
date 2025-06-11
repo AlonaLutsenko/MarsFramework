@@ -1,4 +1,4 @@
-﻿namespace AT.Selenium.Elements.Products.Abstract
+﻿namespace AT.Selenium.Elements.Products
 {
     public interface IProduct
     {

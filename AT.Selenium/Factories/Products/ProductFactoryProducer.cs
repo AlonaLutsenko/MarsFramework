@@ -1,5 +1,4 @@
 ﻿using AT.Selenium.Common.Enums;
-using AT.Selenium.Factories.Abstract;
 
 namespace AT.Selenium.Factories.Products
 {

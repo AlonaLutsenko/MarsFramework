@@ -1,6 +1,6 @@
-﻿using AT.Selenium.Elements.Products.Abstract;
+﻿using AT.Selenium.Elements.Products;
 
-namespace AT.Selenium.Factories.Abstract
+namespace AT.Selenium.Factories
 {
     public interface IProductFactory
     {

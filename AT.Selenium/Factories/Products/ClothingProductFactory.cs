@@ -1,6 +1,5 @@
-﻿using AT.Selenium.Elements.Products.Abstract;
-using AT.Selenium.Elements.Products.Concrete.Clothing;
-using AT.Selenium.Factories.Abstract;
+﻿using AT.Selenium.Elements.Products;
+using AT.Selenium.Elements.Products.Clothing;
 
 namespace AT.Selenium.Factories.Products
 {

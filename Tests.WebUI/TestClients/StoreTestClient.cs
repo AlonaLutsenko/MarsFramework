@@ -1,6 +1,6 @@
 ﻿using AT.Selenium.Common.Enums;
-using AT.Selenium.Elements.Products.Abstract;
-using AT.Selenium.Factories.Abstract;
+using AT.Selenium.Elements.Products;
+using AT.Selenium.Factories;
 using AT.Selenium.Factories.Products;
 
 namespace Tests.WebUI.TestClients
@@ -24,7 +24,6 @@ namespace Tests.WebUI.TestClients
 
             Console.WriteLine($"Received name from card: {productCard.GetCardName()}, Received price from card: {productCard.GetCardPrice()}");
             
-            productCard.AddToWishlist();
             productCard.ClickProductLink();
 
             IProductDetailsPage detailsPage = _factory.CreateProductDetailsPage();
