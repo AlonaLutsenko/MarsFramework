@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using log4net.Appender;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using Serilog;
 using Serilog.Events;
@@ -126,6 +127,17 @@ namespace AT.Framework.Logger
                     restrictedToMinimumLevel: LogEventLevel.Information));
             }
             return baseCfg;
+        }
+
+        public static string GetLogFilePath(string repositoryName)
+        {
+            string fileName = $"{TestContext.CurrentContext.Test.Name}_{NowStamp()}.log";
+            return Path.Combine(_testDirectory!.FullName, fileName);
+        }
+
+        public static DirectoryInfo GetTestDirectoryPath()
+        {
+            return _testDirectory;
         }
     }
 }

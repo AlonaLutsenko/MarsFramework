@@ -1,23 +1,31 @@
-﻿using AT.Framework.Logger;
-using AT.Selenium.Drivers;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace AT.Selenium.Pages.CommonPages
 {
-    public class LoginPage : BasePages
+    public class LoginPage : BasePage
     {
-        private readonly By usernameField = By.Id("user-name");
-        private readonly By passwordField = By.Id("password");
-        private readonly By loginButton = By.Id("login-button");
+        private readonly By userNameInput = By.Id("user-name");
+        private readonly By passwordInput = By.Id("password");
+        private readonly By loginButtonElement = By.Id("login-button");
+
+        public LoginPage()
+        {
+        }
 
         public void Login(string username, string password)
         {
-            var driver = Driver.GetInstance();
-            SerilogBase.Info("Navigated to Login Page");
-            SerilogBase.TestStepLog("User enters credentials");
-            driver.FindElement(usernameField).SendKeys(username);
-            driver.FindElement(passwordField).SendKeys(password);
-            driver.FindElement(loginButton).Click();
+            EnterUsername(username);
+            EnterPassword(password);
+            ClickLoginButton();
         }
+
+        public void EnterUsername(string username) =>
+            WaitForElementIsVisible(userNameInput).SendKeys(username);
+
+        public void EnterPassword(string password) =>
+            WaitForElementIsVisible(passwordInput).SendKeys(password);
+
+        public void ClickLoginButton() =>
+            WaitForElementToBeClickable(loginButtonElement).Click();
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 
-namespace Tests.WebUI.Tests
+namespace Tests.WebUI.LoginTests
 {
     [TestFixture]
     public class LoginTests : WebUITestBase

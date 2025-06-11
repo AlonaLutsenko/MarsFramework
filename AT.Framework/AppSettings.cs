@@ -41,5 +41,7 @@ namespace AT.Framework
                 return _loggerConfig;
             }
         }
+
+        public static string TestResultsDirectory { get; set; }
     }
 }
